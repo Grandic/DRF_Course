@@ -1,23 +1,18 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.utils.translation import gettext_lazy as _
+
+from users.managers import CustomUserManager
 
 NULLABLE = {'blank': True, 'null': True}
 
 
-class UserRoles(models.TextChoices):
-    MEMBER = 'member', _('memeber')
-    MODERATOR = 'moderator', _('moderator')
-    SUPERUSER = 'superuser', _('superuser')
-
-
 class User(AbstractUser):
+    """User model"""
+
     username = None
     email = models.EmailField(unique=True, verbose_name='email')
     phone = models.CharField(unique=True, max_length=35, verbose_name='номер телефона', **NULLABLE)
-    city = models.CharField(max_length=200, verbose_name='город', **NULLABLE)
     avatar = models.ImageField(upload_to='users/', verbose_name='аватар', **NULLABLE)
-    role = models.CharField(max_length=9, choices=UserRoles.choices, default=UserRoles.MEMBER)
 
     # Telegram
     chat_id = models.PositiveIntegerField(verbose_name='chat_id', **NULLABLE)
@@ -25,5 +20,11 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
+    objects = CustomUserManager()
+
     def __str__(self):
-        return f'{self.email} {self.is_staff} {self.is_superuser} {self.role}'
+        return self.email
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'

@@ -1,35 +1,30 @@
 import datetime
-
 from django.db import models
 from users.models import NULLABLE
 from django.conf import settings
-
+from django.utils import timezone
 
 class Habit(models.Model):
-    Period = (
-        ('DAILY', 'каждый день'),
-        ('WEEKLY', 'раз в неделю'),
-    )
+    """Habit model"""
 
-    user = models.ForeignKey('users.User', on_delete=models.CASCADE, **NULLABLE)
-    place = models.CharField(max_length=100, verbose_name='место',  **NULLABLE)
-    time = models.TimeField(verbose_name='время выполения привычки', **NULLABLE)
-    action = models.CharField(max_length=250, verbose_name='действие',  **NULLABLE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь')
+
+    place = models.CharField(max_length=100, verbose_name='Место',  **NULLABLE)
+    time = models.DateTimeField(verbose_name='Время и дата начала', default=timezone.now)
+    action = models.CharField(max_length=250, verbose_name='Действие',  **NULLABLE)
     is_nice = models.BooleanField(default=False, verbose_name='Привычка приятная?')
-
-
-    period = models.CharField(max_length=12, verbose_name='Периодичность выполнения', choices=Period, default='DAILY')
-    reward = models.CharField(max_length=250, verbose_name='вознаграждение', **NULLABLE)
-    time_to_complete = models.TimeField(verbose_name='Время на выполнение', default=datetime.time(minute=2))
+    related_habit = models.ForeignKey('Habit', on_delete=models.SET_NULL, **NULLABLE)
+    period = models.SmallIntegerField(default=7, verbose_name='Периодичность выполнения')
+    reward = models.CharField(max_length=250, verbose_name='Вознаграждение', **NULLABLE)
+    time_to_complete = models.DurationField(verbose_name='Время выполнения')
     is_public = models.BooleanField(default=False, verbose_name='Признак публичности')
-    # owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE)
 
-
+    next_reminder_date = models.DateField(**NULLABLE, verbose_name='Дата следующего напоминания')
 
     def __str__(self):
-        return f'{self.user} {self.is_nice}'
+        return f'Я буду {self.action} в {self.time} в {self.place}'
 
     class Meta:
-        verbose_name = 'привычка'
-        verbose_name_plural = 'привычки'
-        ordering = ('is_public',)
+        verbose_name = 'Привычка'
+        verbose_name_plural = 'Привычки'
+        ordering = ('time',)
