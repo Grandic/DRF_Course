@@ -9,7 +9,7 @@ class HabitSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Habit
-        fields = ('id', 'user', 'place', 'time', 'action', 'is_nice', 'related_habit', 'period', 'reward',
+        fields = ('id', 'user', 'place', 'start', 'action', 'is_nice', 'related_habit', 'frequency', 'reward',
                   'time_to_complete', 'is_public', 'next_reminder_date')
         read_only_fields = ('user',)
         validators = [
