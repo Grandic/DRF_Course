@@ -11,8 +11,10 @@ class User(AbstractUser):
 
     username = None
     email = models.EmailField(unique=True, verbose_name='email')
-    phone = models.CharField(unique=True, max_length=35, verbose_name='номер телефона', **NULLABLE)
-    avatar = models.ImageField(upload_to='users/', verbose_name='аватар', **NULLABLE)
+    phone = models.CharField(unique=True, max_length=35,
+                             verbose_name='номер телефона', **NULLABLE)
+    avatar = models.ImageField(upload_to='users/',
+                               verbose_name='аватар', **NULLABLE)
 
     # Telegram
     chat_id = models.PositiveIntegerField(verbose_name='chat_id', **NULLABLE)

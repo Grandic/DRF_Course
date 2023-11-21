@@ -16,12 +16,13 @@ class HabitCreateAPIView(generics.CreateAPIView):
         serializer.save(user=self.request.user)
 
 
+
 class HabitListAPIView(generics.ListAPIView):
     """Habits list"""
 
     serializer_class = HabitSerializer
     pagination_class = HabitsPagination
-    permission_classes = [IsOwnerOrIsSuperuser]
+    permission_classes = [IsAuthenticated, IsOwnerOrIsSuperuser]
 
     def get_queryset(self):
         if self.request.user.is_superuser:
@@ -44,7 +45,7 @@ class HabitRetrieveAPIView(generics.RetrieveAPIView):
 
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
-    permission_classes = [IsOwnerOrIsSuperuser]
+    permission_classes = [IsAuthenticated, IsOwnerOrIsSuperuser]
 
 
 class HabitUpdateAPIView(generics.UpdateAPIView):
@@ -52,10 +53,10 @@ class HabitUpdateAPIView(generics.UpdateAPIView):
 
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
-    permission_classes = [IsOwnerOrIsSuperuser]
+    permission_classes = [IsAuthenticated, IsOwnerOrIsSuperuser]
 
 
 class HabitDestroyAPIView(generics.DestroyAPIView):
     """Habit delete"""
     queryset = Habit.objects.all()
-    permission_classes = [IsOwnerOrIsSuperuser]
+    permission_classes = [IsAuthenticated, IsOwnerOrIsSuperuser]

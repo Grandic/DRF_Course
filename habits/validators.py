@@ -3,7 +3,7 @@ from rest_framework.exceptions import ValidationError
 
 
 class RelatedHabitOrRewardValidator:
-    """ Исключает одновременный выбор связанной привычки и вознаграждения """
+    """Исключает одновременный выбор связанной привычки и вознаграждения"""
 
     def __init__(self, related_habit_field, reward_field):
         self.related_habit_field = related_habit_field
@@ -17,7 +17,7 @@ class RelatedHabitOrRewardValidator:
 
 
 class TimeToCompleteLimitationValidator:
-    """ Ограничивает время выполнения привычки """
+    """Ограничивает время выполнения привычки"""
 
     def __init__(self, time_to_complete_field):
         self.time_to_complete_field = time_to_complete_field
@@ -29,7 +29,7 @@ class TimeToCompleteLimitationValidator:
 
 
 class RelatedHabitValidation:
-    """ В связанные привычки попадают только приятные привычки """
+    """В связанные привычки попадают только приятные привычки"""
 
     def __init__(self, related_habit_field):
         self.related_habit_field = related_habit_field
@@ -43,7 +43,7 @@ class RelatedHabitValidation:
 
 
 class PleasantHabitValidation:
-    """ Приятная привычка не имеет вознаграждения или другой связанной привычки """
+    """Приятная привычка не имеет вознаграждения или другой связанной привычки"""
 
     def __init__(self, related_habit_field, is_pleasant_field, reward_field):
         self.related_habit_field = related_habit_field
@@ -61,7 +61,7 @@ class PleasantHabitValidation:
 
 
 class FrequencyValidation:
-    """ Привычка выполняется не реже, чем 1 раз в 7 дней """
+    """Привычка выполняется не реже, чем 1 раз в 7 дней"""
 
     def __init__(self, frequency_field):
         self.frequency_field = frequency_field
