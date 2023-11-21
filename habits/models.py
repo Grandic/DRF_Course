@@ -10,9 +10,9 @@ class Habit(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE, verbose_name='Пользователь')
 
-    place = models.CharField(max_length=100, verbose_name='Место',  **NULLABLE)
+    place = models.CharField(max_length=100, verbose_name='Место', **NULLABLE)
     start = models.DateTimeField(verbose_name='Время и дата начала', default=timezone.now)
-    action = models.CharField(max_length=250, verbose_name='Действие',  **NULLABLE)
+    action = models.CharField(max_length=250, verbose_name='Действие', **NULLABLE)
     is_pleasant = models.BooleanField(default=False, verbose_name='Привычка приятная?')
     related_habit = models.ForeignKey('Habit', on_delete=models.SET_NULL, **NULLABLE)
     frequency = models.SmallIntegerField(default=7, verbose_name='Периодичность выполнения')

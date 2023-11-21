@@ -16,13 +16,12 @@ class HabitCreateAPIView(generics.CreateAPIView):
         serializer.save(user=self.request.user)
 
 
-
 class HabitListAPIView(generics.ListAPIView):
     """Habits list"""
 
     serializer_class = HabitSerializer
     pagination_class = HabitsPagination
-    permission_classes = [IsAuthenticated, IsOwnerOrIsSuperuser]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         if self.request.user.is_superuser:
