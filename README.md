@@ -9,6 +9,7 @@
     Требования
 
 Технологии
+
     Django 
     Djangorestframework (Фреймоврк)
     DRF-Yasq (Документирование)
