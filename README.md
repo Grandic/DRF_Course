@@ -8,6 +8,18 @@
     Начало работы
     Требования
 
+Технологии
+    Django 
+    Djangorestframework (Фреймоврк)
+    DRF-Yasq (Документирование)
+    Celery (Планировщик)
+    Psycopg2 (Работа с базой данных)
+    Pillow
+    Pytest
+    Redis
+    
+     
+    
 
     
 
