@@ -11,7 +11,7 @@ def send_telegram_message():
     current_date = datetime.now().date()
     current_time = datetime.now().time().strftime('%H:%M')
 
-    habits = Habit.objects.filter(is_nice=False)
+    habits = Habit.objects.filter(is_pleasant=False)
 
     for habit in habits:
         period = habit.frequency

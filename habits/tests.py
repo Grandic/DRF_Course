@@ -213,9 +213,10 @@ class HabitTestCase(APITestCase):
         )
         self.assertEquals(
             response.json(),
-            {'non_field_errors':
-                 ['Время выполнения привычки НЕ должно превышать 120 секунд']
-             }
+            {
+                'non_field_errors':
+                    ['Время выполнения привычки НЕ должно превышать 120 секунд']
+            }
         )
 
     def test_RelatedHabitValidation(self):

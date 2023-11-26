@@ -13,7 +13,7 @@ class UserCreateAPIView(generics.CreateAPIView):
     class Meta:
         model = User
         fields = '__all__'
-        permission_classes = [IsAuthenticated, IsSuperuser]
+        permission_classes = [IsAuthenticated]
 
 
 class UserListAPIView(generics.ListAPIView):
