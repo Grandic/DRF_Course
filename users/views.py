@@ -13,7 +13,6 @@ class UserCreateAPIView(generics.CreateAPIView):
     class Meta:
         model = User
         fields = '__all__'
-        permission_classes = [IsAuthenticated]
 
 
 class UserListAPIView(generics.ListAPIView):
@@ -23,9 +22,10 @@ class UserListAPIView(generics.ListAPIView):
     serializer_class = UserSerializer
 
     class Meta:
+
         model = User
         fields = '__all__'
-        permission_classes = [IsAuthenticated, IsSuperuser]
+        permission_classes = [IsSuperuser]
 
 
 class UserRetrieveAPIView(generics.RetrieveAPIView):
@@ -37,7 +37,7 @@ class UserRetrieveAPIView(generics.RetrieveAPIView):
     class Meta:
         model = User
         fields = '__all__'
-        permission_classes = [IsAuthenticated, IsSuperuser]
+        permission_classes = [IsOwnerOrIsSuperuser]
 
 
 class UserUpdateAPIView(generics.UpdateAPIView):
@@ -49,7 +49,7 @@ class UserUpdateAPIView(generics.UpdateAPIView):
     class Meta:
         model = User
         fields = '__all__'
-        permission_classes = [IsAuthenticated, IsOwnerOrIsSuperuser]
+        permission_classes = [IsOwnerOrIsSuperuser]
 
 
 class UserDestroyAPIView(generics.DestroyAPIView):
@@ -60,4 +60,4 @@ class UserDestroyAPIView(generics.DestroyAPIView):
     class Meta:
         model = User
         fields = '__all__'
-        permission_classes = [IsAuthenticated, IsSuperuser]
+        permission_classes = [IsOwnerOrIsSuperuser]
