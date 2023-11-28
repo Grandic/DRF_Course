@@ -17,7 +17,6 @@ class HabitCreateAPIView(generics.CreateAPIView):
         create_habit_schedule(habit)
 
 
-
 class HabitListAPIView(generics.ListAPIView):
     """Habits list"""
 

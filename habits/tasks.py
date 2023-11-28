@@ -1,7 +1,4 @@
-from datetime import datetime, timedelta
-import requests
 from celery import shared_task
-from config.settings import TELEGRAM_BOT_API_KEY
 from habits.models import Habit
 from telebot import TeleBot
 from django.conf import settings
@@ -14,8 +11,6 @@ def send_telegram_message(habit_id):
     bot = TeleBot(settings.TELEGRAM_BOT_API_KEY)
     message = f'Напоминание о выполнении привычки {habit.action} в {habit.start} в {habit.place}'
     bot.send_message(habit.user.chat_id, message)
-
-
 
     # current_date = datetime.now().date()
     # current_time = datetime.now().time().strftime('%H:%M')
