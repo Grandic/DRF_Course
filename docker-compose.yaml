@@ -1,61 +1,74 @@
-version: '3'
+version: '3.9'
 
 services:
-
-  redis:
-    image: redis
-    ports:
-      - '6379:6379'
-    depends_on:
-      - app
-
-
   db:
-    image: postgres
+    restart: always
+    container_name: db
     env_file:
-      - .env
+      - ./.env
+    image: postgres:14.9-alpine
     volumes:
-      - pg_data:/var/lib/postgresql/data/pgdata
-    ports:
-      - '5436:5436'
+      - postgres_data:/var/lib/postgresql/data
+      - ./.env.docker
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: [ 'CMD-SHELL', 'pg_isready' ]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  app:
-    build: .
-    tty: true
-    command: python manage.py runserver 0.0.0.0:8000
-    ports:
-      - '8001:8001'
+  redis:
+    image: redis:alpine
+    container_name: redis_app
+    command: redis-server --save 20 1 --loglevel warning
     volumes:
-      - .:/app
-      - ./env
+      - ./data/cache:/data
+
+  api:
+    restart: always
+    build:
+      context: .
+    container_name: api
     depends_on:
       db:
         condition: service_healthy
-
+      redis:
+        condition: service_started
+    env_file:
+      - ./.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - ./.env.docker
+    command: >
+      bash -c "python  manage.py collectstatic --noinput
+      && python manage.py makemigrations
+      && python manage.py migrate      
+      && python manage.py runserver 0.0.0.0:8000"
 
   celery:
+    container_name: celery
     build: .
-    tty: true
-    command: celery -A config worker -l INFO
-    depends_on:
+    command: >
+      bash -c "celery -A config.celery worker --loglevel=info"
+    volumes:
+      - .:/app
+    links:
       - redis
-      - app
+    depends_on:
+      - db
+      - api
 
-  celery_beat:
+  celery-beat:
+    container_name: celery-beat
     build: .
-    tty: true
-    env_file:
-      - .env
-    command: celery -A config beat -l INFO -S django
+    command: >
+      bash -c "sleep 30 && celery -A config.celery beat --loglevel=info"
+    volumes:
+      - .:/app
     depends_on:
-      - redis
-      - app
-
+      - api
+      - celery
 
 volumes:
-  pg_data:
+  postgres_data:
